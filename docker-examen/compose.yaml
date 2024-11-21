@@ -1,0 +1,56 @@
+services:
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: maestros_db
+      PMA_USER: root
+      PMA_PASSWORD: maestros123
+ 
+  maestros_db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: maestros123
+ 
+  maestros_app:
+    build:
+      context: .
+      dockerfile: dockerfile_maestros.yaml
+    ports:
+      - "8081:80"
+    environment:
+      DB_HOST: maestros_db
+      DB_NAME: maestros
+      DB_USER: root
+      DB_PASSWORD: maestros123
+      API_ALUMNO: alumnos_app
+
+
+
+  phpmyadmin2:
+    image: phpmyadmin
+    ports:
+      - "8082:80"
+    environment:
+      PMA_HOST: alumnos_db
+      PMA_USER: root
+      PMA_PASSWORD: alumnos123
+ 
+  alumnos_db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: alumnos123
+ 
+  alumnos_app:
+    build:
+      context: .
+      dockerfile: dockerfile_alumnos.yaml
+    ports:
+      - "8083:80"
+    environment:
+      DB_HOST: alumnos_db
+      DB_NAME: alumnos
+      DB_USER: root
+      DB_PASSWORD: alumnos123
+    
